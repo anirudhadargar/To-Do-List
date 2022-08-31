@@ -70,14 +70,20 @@ app.post("/", function(req, res){
   });
 
   if(listName==="Today"){
-    newItem.save();
-    res.redirect("/");
+    newItem.save(function(err){
+      if(!err){
+        res.redirect("/");
+      }
+    });
   }
   else{
     List.findOne({name: listName},function(err,foundList){
       foundList.items.push(newItem);
-      foundList.save();
-      res.redirect("/"+listName);
+      foundList.save(function(err){
+        if(!err){
+          res.redirect("/"+listName);
+        }
+      });
     });
   }
 });
